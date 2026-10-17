@@ -1,0 +1,2 @@
+pip install pybluez
+apt install bluetooth bluez-tools
