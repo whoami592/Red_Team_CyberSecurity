@@ -1,0 +1,11 @@
+Banner — your Braille art, red, with author credit to Sabaz Ali Khan
+Beacon loop — reconnects every 30 s if the tunnel drops
+Built-in modules — sysinfo, download (base64 exfil), upload, persist (cron), screenshot, keylog, procs, kill
+Session logs in /tmp/.iprat_logs for report writing
+Pure bash — no Python/PowerShell dependency on target; only needs /dev/tcp (bash ≥ 2.04) and nc on your side
+Hardening suggestions for real engagements
+Wrap traffic in TLS: pipe through openssl s_server/s_client instead of raw nc
+Add a shared-secret handshake in the payload so honeypots can't capture fake sessions
+Obfuscate the payload (base64 | eval + xxd splitting) before deployment
+Run the listener inside a screen/tmux session
+Note: as written, the raw-TCP mode is plaintext and noisy — fine for lab tests; use the TLS wrapper for anything routed over a network you don't control. Want me to add the TLS layer, AES-encrypted command channel, or a Windows (PowerShell) payload variant next?
